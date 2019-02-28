@@ -10,6 +10,7 @@ import UIKit
 
 protocol TabChangedHandler {
     func onSelectTab(index: Int)
+    func adjustScrollOffset(offset: CGFloat, from: UIViewController)
 }
 
 class Main: UITabBarController {
@@ -32,5 +33,12 @@ class Main: UITabBarController {
 extension Main: TabChangedHandler {
     func onSelectTab(index: Int) {
         self.selectedIndex = index
+    }
+    func adjustScrollOffset(offset: CGFloat, from: UIViewController) {
+        if selectedIndex == 0 {
+            (viewControllers![1] as! Tab2).tableView.contentOffset.y = offset
+        } else {
+            (viewControllers![0] as! Tab1).scrollView.contentOffset.y = offset
+        }
     }
 }

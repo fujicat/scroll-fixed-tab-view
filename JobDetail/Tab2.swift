@@ -9,7 +9,7 @@
 import UIKit
 
 class Tab2: UITableViewController {
-    var header: Header2?
+    var header: Header?
     var tabChangedHandler: TabChangedHandler! {
         didSet {
             header?.tabChangedHandler = tabChangedHandler
@@ -19,9 +19,9 @@ class Tab2: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if let header = UINib.loadView(name: "Header2", owner: self) as? Header2 {
+        if let header = UINib.loadView(name: "Header2", owner: self) as? Header {
             tableView.addSubview(header)
-            header.initFrame(width: tableView.frame.width)
+            header.initialize(width: view.frame.width, buttonIndex: 0)
 
             tableView.contentInset.top = header.viewHeight
             tableView.contentOffset.y = header.viewHeight * -1
@@ -53,6 +53,7 @@ class Tab2: UITableViewController {
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if let header = self.header {
             header.updateHeight(offset: scrollView.contentOffset.y, inset: scrollView.contentInset.top)
+            tabChangedHandler?.adjustScrollOffset(offset: header.contentOffset, from: self)
         }
     }
 }
